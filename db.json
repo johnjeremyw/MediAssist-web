@@ -1,0 +1,146 @@
+{
+  "patient": {
+    "name": "Grace Muthoni",
+    "age": 72,
+    "location": "Kasarani, Nairobi",
+    "caregiver": "Peter Kariuki",
+    "caregiverPhone": "+254 712 345 678",
+    "clinician": "Dr. Nancy Wanjiku"
+  },
+  "medications": [
+    {
+      "id": "med-1",
+      "name": "Metformin",
+      "dose": "500mg",
+      "frequency": "Once daily",
+      "scheduledTime": "08:00",
+      "scheduledTimeFormatted": "8:00 AM",
+      "instructions": "Take after breakfast with water",
+      "status": "taken",
+      "statusMessage": "Taken at 8:02 AM",
+      "lastTakenTimestamp": "2026-08-10T08:02:00.000Z",
+      "shareWithCaregiver": true,
+      "color": "green"
+    },
+    {
+      "id": "med-2",
+      "name": "Amlodipine",
+      "dose": "5mg",
+      "frequency": "Once daily",
+      "scheduledTime": "13:00",
+      "scheduledTimeFormatted": "1:00 PM",
+      "instructions": "Take with a glass of water",
+      "status": "due_soon",
+      "statusMessage": "Snoozed for 10 minutes",
+      "lastTakenTimestamp": null,
+      "shareWithCaregiver": true,
+      "color": "orange"
+    },
+    {
+      "id": "med-3",
+      "name": "Ibuprofen",
+      "dose": "200mg",
+      "frequency": "Twice daily",
+      "scheduledTime": "18:00",
+      "scheduledTimeFormatted": "6:00 PM",
+      "instructions": "Take after meals for joint pain",
+      "status": "due_soon",
+      "statusMessage": "Snoozed for 10 minutes",
+      "lastTakenTimestamp": null,
+      "shareWithCaregiver": true,
+      "color": "orange"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alert-1",
+      "medicationId": "med-3",
+      "medicationName": "Ibuprofen 200mg",
+      "type": "missed_dose",
+      "message": "Missed Dose Alert: Ibuprofen 200mg is overdue by 34 minutes.",
+      "recipient": "Peter Kariuki (+254 712 345 678)",
+      "channel": "SMS & Push Notification",
+      "timestamp": "2026-08-10T11:00:00.000Z",
+      "status": "sent"
+    }
+  ],
+  "adherence": {
+    "overallPercentage": 85,
+    "onTimeDoses": 18,
+    "totalDoses": 21,
+    "missedDoses": 1,
+    "lateDoses": 1,
+    "weeklyBreakdown": [
+      {
+        "day": "Mon",
+        "short": "M",
+        "percentage": 100,
+        "status": "green",
+        "label": "All 3 taken on time"
+      },
+      {
+        "day": "Tue",
+        "short": "T",
+        "percentage": 100,
+        "status": "green",
+        "label": "All 3 taken on time"
+      },
+      {
+        "day": "Wed",
+        "short": "W",
+        "percentage": 75,
+        "status": "orange",
+        "label": "1 late confirmation (+45 min)"
+      },
+      {
+        "day": "Thu",
+        "short": "T",
+        "percentage": 100,
+        "status": "green",
+        "label": "All 3 taken on time"
+      },
+      {
+        "day": "Fri",
+        "short": "F",
+        "percentage": 33,
+        "status": "red",
+        "label": "1 missed dose (Ibuprofen 6PM)"
+      },
+      {
+        "day": "Sat",
+        "short": "S",
+        "percentage": 100,
+        "status": "green",
+        "label": "All 3 taken on time"
+      },
+      {
+        "day": "Sun",
+        "short": "S",
+        "percentage": 100,
+        "status": "green",
+        "label": "All 3 taken on time"
+      }
+    ],
+    "notes": [
+      "18 of 21 doses confirmed on time",
+      "1 missed dose (Fri, Ibuprofen 6PM)",
+      "1 late confirmation (Wed, +45 min)"
+    ]
+  },
+  "notifications": [
+    {
+      "id": "notif-1786352710572",
+      "title": "Caregiver Reminder",
+      "message": "Peter sent a nudge: \"Hi Grace, please remember to take your Ibuprofen 200mg!\"",
+      "timestamp": "2026-08-10T09:05:10.572Z",
+      "read": false
+    },
+    {
+      "id": "notif-1",
+      "title": "New Night Medication Added",
+      "message": "Peter added a new night medication to your schedule.",
+      "timestamp": "2026-08-10T10:15:00.000Z",
+      "read": false
+    }
+  ]
+    }

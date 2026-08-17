@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediAssist - Medication Reminder App for Elderly Users</title>
+  <!-- Google Fonts for Accessibility & High Readability -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Persona Switcher Header -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="logo-icon">💊</div>
+      <div>
+        <h1 class="app-title">MediAssist</h1>
+        <p class="app-subtitle">Elderly Safety Net & Medication Reminder</p>
+      </div>
+    </div>
+
+    <!-- Role Switcher -->
+    <div class="role-selector" aria-label="Switch User Persona">
+      <button class="role-btn active" data-role="patient" id="role-patient-btn">
+        <span class="role-icon">👵</span>
+        <span class="role-text">Grace (Patient)</span>
+      </button>
+      <button class="role-btn" data-role="caregiver" id="role-caregiver-btn">
+        <span class="role-icon">👨‍💻</span>
+        <span class="role-text">Peter (Caregiver)</span>
+      </button>
+      <button class="role-btn" data-role="clinician" id="role-clinician-btn">
+        <span class="role-icon">👩‍⚕️</span>
+        <span class="role-text">Dr. Nancy (Doctor)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Interactive Simulation Toolbar -->
+  <div class="sim-bar">
+    <span class="sim-label">⚡ Interactive HCI Simulator:</span>
+    <button class="sim-btn sim-alarm" id="sim-trigger-alarm">
+      ⏰ Trigger Live Alarm Overlay (Figma S2)
+    </button>
+    <button class="sim-btn sim-overdue" id="sim-trigger-missed">
+      🚨 Simulate 30-min Missed Dose Escalation
+    </button>
+    <button class="sim-btn sim-speak" id="sim-test-voice">
+      🔊 Test Audio Validation ("Well done, Grace!")
+    </button>
+  </div>
+
+  <!-- Notification Banner (Grace's Remote Updates) -->
+  <div id="patient-notif-banner" class="notif-banner hidden">
+    <div class="notif-content">
+      <span class="notif-icon">🔔</span>
+      <div>
+        <strong id="notif-title">Notice from Peter:</strong>
+        <span id="notif-body">Peter added a new night medication to your schedule.</span>
+      </div>
+    </div>
+    <button class="notif-close" id="close-notif-btn">&times;</button>
+  </div>
+
+  <!-- MAIN APP CONTAINER (Mobile Frame Centered) -->
+  <main class="mobile-viewport">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: PATIENT HOME (S1 - TODAY'S SCHEDULE) -->
+    <!-- ========================================== -->
+    <section id="view-patient" class="app-view active-view">
+      <!-- Greeting Bar -->
+      <div class="patient-card greeting-card">
+        <div class="greeting-text">
+          <h2 id="greeting-name">Good morning, Grace</h2>
+          <p id="greeting-sub">Tuesday, 8 Sept &bull; 3 meds today</p>
+        </div>
+        <div class="patient-avatar">👵</div>
+      </div>
+
+      <!-- Traffic Light Metric Summary Pills (Clickable Filters) -->
+      <div class="metrics-grid" role="region" aria-label="Filter Medications by Status">
+        <button class="metric-card metric-taken" id="filter-btn-taken" data-filter="taken" title="Show Taken Medications Only">
+          <span class="metric-num" id="count-taken">1</span>
+          <span class="metric-lbl">Taken</span>
+        </button>
+        <button class="metric-card metric-due" id="filter-btn-due" data-filter="due_soon" title="Show Due Soon Medications Only">
+          <span class="metric-num" id="count-due">1</span>
+          <span class="metric-lbl">Due Soon</span>
+        </button>
+        <button class="metric-card metric-missed" id="filter-btn-missed" data-filter="overdue" title="Show Missed Medications Only">
+          <span class="metric-num" id="count-missed">1</span>
+          <span class="metric-lbl">Missed</span>
+        </button>
+      </div>
+
+      <!-- Category Filter Row -->
+      <div class="filter-bar">
+        <button class="filter-chip active-chip" id="chip-all" data-filter="all">📋 All (Grouped)</button>
+        <button class="filter-chip chip-due" id="chip-due" data-filter="due_soon">🟡 Due Soon</button>
+        <button class="filter-chip chip-missed" id="chip-missed" data-filter="overdue">🔴 Missed</button>
+        <button class="filter-chip chip-taken" id="chip-taken" data-filter="taken">🟢 Taken</button>
+      </div>
+
+      <!-- Today's Schedule List (Separated & Categorized) -->
+      <div class="section-header">
+        <h3 id="schedule-section-title">Today's Schedule</h3>
+        <span class="badge-tag" id="active-filter-badge">All 3 Categories</span>
+      </div>
+
+      <div class="schedule-list" id="patient-schedule-list">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Prominent Primary Action Button (72px target) -->
+      <button class="btn-primary-lg btn-add-med" id="open-add-med-btn">
+        <span class="btn-icon">+</span> Add Medication
+      </button>
+
+      <!-- Bottom Nav for Patient View -->
+      <nav class="bottom-nav">
+        <button class="nav-item active" data-target="schedule"><span class="nav-icon">📅</span> Schedule</button>
+        <button class="nav-item" data-target="reports" id="nav-reports-btn"><span class="nav-icon">📊</span> Reports</button>
+        <button class="nav-item" data-target="settings"><span class="nav-icon">⚙️</span> Settings</button>
+      </nav>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: CAREGIVER DASHBOARD (S5 - PETER'S VIEW) -->
+    <!-- ========================================== -->
+    <section id="view-caregiver" class="app-view hidden-view">
+      <div class="caregiver-header">
+        <h2>Grace's Caregiver Dashboard</h2>
+        <p class="sub-text">Remote Patient Monitoring & Alerts</p>
+      </div>
+
+      <!-- Bright Red Missed Dose Alert Banner (S5 Figma) -->
+      <div class="alert-banner-red" id="missed-alert-banner">
+        <div class="alert-header">
+          <span class="alert-icon">▲</span>
+          <div>
+            <strong>Missed Dose Alert</strong>
+            <p id="alert-banner-text">Ibuprofen 200mg &ndash; overdue 34 min</p>
+          </div>
+        </div>
+        <div class="alert-actions">
+          <a href="tel:+254712345678" class="btn-alert-action btn-call">📞 Call Grace</a>
+          <button class="btn-alert-action btn-send-nudge" id="nudge-grace-btn">🔔 Send Reminder</button>
+        </div>
+      </div>
+
+      <!-- Live Intake Status -->
+      <div class="dashboard-block">
+        <h3>Today's Status</h3>
+        <div class="status-summary-list" id="caregiver-status-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Remote Schedule Manager -->
+      <div class="dashboard-block">
+        <h3>Manage Schedule (Remote)</h3>
+        <button class="btn-secondary-lg btn-remote-add" id="caregiver-add-med-btn">
+          + Add night medication
+        </button>
+      </div>
+
+      <!-- Adherence Summary Card -->
+      <div class="dashboard-block">
+        <h3>This Week's Adherence</h3>
+        <div class="adherence-bar-container">
+          <div class="progress-bar-fill" style="width: 85%;"></div>
+        </div>
+        <p class="adherence-sub-text"><strong>85%</strong> &bull; 18 of 21 doses on time</p>
+      </div>
+
+      <!-- SMS & Push Notification Log -->
+      <div class="dashboard-block">
+        <h3>Automated SMS Alert Log</h3>
+        <div class="sms-log-container" id="sms-alert-log">
+          <!-- Logged alerts -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: CLINICIAN PORTAL (S4 - DR. NANCY'S VIEW) -->
+    <!-- ========================================== -->
+    <section id="view-clinician" class="app-view hidden-view">
+      <div class="clinician-header">
+        <h2>Clinical Adherence Report (S4)</h2>
+        <p class="sub-text">Patient: Grace Muthoni (72 yrs)</p>
+      </div>
+
+      <!-- Circular SVG 85% Adherence Ring Chart (Figure 5 Figma) -->
+      <div class="adherence-ring-wrapper">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 100 100">
+            <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+            <circle class="ring-fg" cx="50" cy="50" r="40" style="stroke-dashoffset: 37.68;"></circle>
+          </svg>
+          <div class="ring-text">
+            <span class="ring-percent" id="ring-percent-val">85%</span>
+            <span class="ring-label">adherence</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Horizontal Weekly Progress Bars (Mon - Sun) -->
+      <div class="weekly-bars-container">
+        <h3>This Week</h3>
+        <div class="day-bar-row">
+          <span class="day-name">Mon</span>
+          <div class="day-track"><div class="day-fill fill-green" style="width: 100%;"></div></div>
+        </div>
+        <div class="day-bar-row">
+          <span class="day-name">Tue</span>
+          <div class="day-track"><div class="day-fill fill-green" style="width: 100%;"></div></div>
+        </div>
+        <div class="day-bar-row">
+          <span class="day-name">Wed</span>
+          <div class="day-track"><div class="day-fill fill-orange" style="width: 65%;"></div></div>
+        </div>
+        <div class="day-bar-row">
+          <span class="day-name">Thu</span>
+          <div class="day-track"><div class="day-fill fill-green" style="width: 100%;"></div></div>
+        </div>
+        <div class="day-bar-row">
+          <span class="day-name">Fri</span>
+          <div class="day-track"><div class="day-fill fill-red" style="width: 30%;"></div></div>
+        </div>
+        <div class="day-bar-row">
+          <span class="day-name">Sat</span>
+          <div class="day-track"><div class="day-fill fill-green" style="width: 100%;"></div></div>
+        </div>
+        <div class="day-bar-row">
+          <span class="day-name">Sun</span>
+          <div class="day-track"><div class="day-fill fill-green" style="width: 100%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Clinical Summary Card -->
+      <div class="summary-box">
+        <h4>Summary</h4>
+        <ul id="clinical-summary-list">
+          <li>18 of 21 doses confirmed on time</li>
+          <li>1 missed dose (Fri, Ibuprofen 6PM)</li>
+          <li>1 late confirmation (Wed, +45 min)</li>
+        </ul>
+      </div>
+
+      <!-- Export Buttons -->
+      <div class="export-btn-group">
+        <a href="/api/reports/export?format=pdf" target="_blank" class="btn-export btn-pdf">
+          📄 View / Print PDF Report
+        </a>
+        <a href="/api/reports/export?format=csv" class="btn-export btn-csv">
+          📊 Export CSV Data
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL S2: REMINDER ALERT OVERLAY (FIGMA S2) -->
+  <!-- ========================================== -->
+  <div id="modal-reminder" class="modal-overlay hidden">
+    <div class="reminder-card-modal">
+      <div class="reminder-header-bar">
+        <span>MEDICATION REMINDER</span>
+      </div>
+
+      <div class="reminder-body">
+        <div class="pill-graphic-circle">
+          <div class="pill-shape"></div>
+        </div>
+
+        <h2 class="med-alert-title" id="alert-med-name">Amlodipine 5mg</h2>
+        <p class="med-alert-instr" id="alert-med-instr">Take with a glass of water</p>
+        <p class="med-alert-time" id="alert-med-time">Scheduled for 1:00 PM</p>
+
+        <button class="btn-take-pill" id="btn-confirm-intake">
+          ✓ I Took It
+        </button>
+
+        <button class="btn-snooze-pill" id="btn-snooze-intake">
+          Snooze 10 minutes
+        </button>
+
+        <p class="caregiver-warning-note">
+          If not confirmed within 30 minutes, Peter will be notified automatically
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL S3: ADD MEDICATION FORM (FIGMA S3) -->
+  <!-- ========================================== -->
+  <div id="modal-add-med" class="modal-overlay hidden">
+    <div class="add-med-card-modal">
+      <div class="modal-header-nav">
+        <button class="back-link" id="close-add-modal">&larr; Back</button>
+        <h2>Add Medication</h2>
+        <div></div>
+      </div>
+
+      <form id="add-med-form" class="clean-form">
+        <div class="form-group">
+          <label for="form-med-name">MEDICATION NAME</label>
+          <input type="text" id="form-med-name" placeholder="e.g. Amlodipine" required class="large-input">
+        </div>
+
+        <div class="form-group">
+          <label for="form-med-dose">DOSE</label>
+          <input type="text" id="form-med-dose" placeholder="e.g. 5 mg" required class="large-input">
+        </div>
+
+        <div class="form-group">
+          <label for="form-med-freq">FREQUENCY</label>
+          <select id="form-med-freq" class="large-input">
+            <option value="Once daily">Once daily</option>
+            <option value="Twice daily">Twice daily</option>
+            <option value="Three times daily">Three times daily</option>
+            <option value="As needed">As needed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="form-med-time">TIME</label>
+          <input type="time" id="form-med-time" value="13:00" required class="large-input">
+        </div>
+
+        <div class="form-group-toggle">
+          <div>
+            <strong>Share with Peter</strong>
+            <p class="toggle-sub">Caregiver sees adherence only</p>
+          </div>
+          <label class="switch-toggle">
+            <input type="checkbox" id="form-share-toggle" checked>
+            <span class="slider-round"></span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary-lg btn-save-med">
+          Save Medication
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

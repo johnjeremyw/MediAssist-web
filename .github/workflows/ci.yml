@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Lint (HTMLHint)
+        run: npx --yes htmlhint@1.1.4 "**/*.html"
+
+      - name: Test (html-validate)
+        run: npx --yes html-validate@9.4.1 "**/*.html"
+
+      - name: Build (assemble site into dist/)
+        run: |
+          mkdir -p dist
+          rsync -av \
+            --exclude='.git' --exclude='.github' --exclude='dist' \
+            --exclude='server.js' --exclude='db.json' \
+            --exclude='.htmlhintrc' --exclude='.htmlvalidate.json' \
+            ./ dist/
+          test -f dist/index.html
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist

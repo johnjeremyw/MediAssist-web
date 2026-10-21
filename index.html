@@ -18,21 +18,21 @@
       <div class="logo-icon">💊</div>
       <div>
         <h1 class="app-title">MediAssist</h1>
-        <p class="app-subtitle">Elderly Safety Net & Medication Reminder</p>
+        <p class="app-subtitle">Elderly Safety Net &amp; Medication Reminder</p>
       </div>
     </div>
 
     <!-- Role Switcher -->
-    <div class="role-selector" aria-label="Switch User Persona">
-      <button class="role-btn active" data-role="patient" id="role-patient-btn">
+    <div class="role-selector" role="group" aria-label="Switch User Persona">
+      <button type="button" class="role-btn active" data-role="patient" id="role-patient-btn">
         <span class="role-icon">👵</span>
         <span class="role-text">Grace (Patient)</span>
       </button>
-      <button class="role-btn" data-role="caregiver" id="role-caregiver-btn">
+      <button type="button" class="role-btn" data-role="caregiver" id="role-caregiver-btn">
         <span class="role-icon">👨‍💻</span>
         <span class="role-text">Peter (Caregiver)</span>
       </button>
-      <button class="role-btn" data-role="clinician" id="role-clinician-btn">
+      <button type="button" class="role-btn" data-role="clinician" id="role-clinician-btn">
         <span class="role-icon">👩‍⚕️</span>
         <span class="role-text">Dr. Nancy (Doctor)</span>
       </button>
@@ -42,13 +42,13 @@
   <!-- Interactive Simulation Toolbar -->
   <div class="sim-bar">
     <span class="sim-label">⚡ Interactive HCI Simulator:</span>
-    <button class="sim-btn sim-alarm" id="sim-trigger-alarm">
+    <button type="button" class="sim-btn sim-alarm" id="sim-trigger-alarm">
       ⏰ Trigger Live Alarm Overlay (Figma S2)
     </button>
-    <button class="sim-btn sim-overdue" id="sim-trigger-missed">
+    <button type="button" class="sim-btn sim-overdue" id="sim-trigger-missed">
       🚨 Simulate 30-min Missed Dose Escalation
     </button>
-    <button class="sim-btn sim-speak" id="sim-test-voice">
+    <button type="button" class="sim-btn sim-speak" id="sim-test-voice">
       🔊 Test Audio Validation ("Well done, Grace!")
     </button>
   </div>
@@ -62,7 +62,7 @@
         <span id="notif-body">Peter added a new night medication to your schedule.</span>
       </div>
     </div>
-    <button class="notif-close" id="close-notif-btn">&times;</button>
+    <button type="button" class="notif-close" id="close-notif-btn">&times;</button>
   </div>
 
   <!-- MAIN APP CONTAINER (Mobile Frame Centered) -->
@@ -82,27 +82,27 @@
       </div>
 
       <!-- Traffic Light Metric Summary Pills (Clickable Filters) -->
-      <div class="metrics-grid" role="region" aria-label="Filter Medications by Status">
-        <button class="metric-card metric-taken" id="filter-btn-taken" data-filter="taken" title="Show Taken Medications Only">
+      <section class="metrics-grid" aria-label="Filter Medications by Status">
+        <button type="button" class="metric-card metric-taken" id="filter-btn-taken" data-filter="taken" title="Show Taken Medications Only">
           <span class="metric-num" id="count-taken">1</span>
           <span class="metric-lbl">Taken</span>
         </button>
-        <button class="metric-card metric-due" id="filter-btn-due" data-filter="due_soon" title="Show Due Soon Medications Only">
+        <button type="button" class="metric-card metric-due" id="filter-btn-due" data-filter="due_soon" title="Show Due Soon Medications Only">
           <span class="metric-num" id="count-due">1</span>
           <span class="metric-lbl">Due Soon</span>
         </button>
-        <button class="metric-card metric-missed" id="filter-btn-missed" data-filter="overdue" title="Show Missed Medications Only">
+        <button type="button" class="metric-card metric-missed" id="filter-btn-missed" data-filter="overdue" title="Show Missed Medications Only">
           <span class="metric-num" id="count-missed">1</span>
           <span class="metric-lbl">Missed</span>
         </button>
-      </div>
+      </section>
 
       <!-- Category Filter Row -->
       <div class="filter-bar">
-        <button class="filter-chip active-chip" id="chip-all" data-filter="all">📋 All (Grouped)</button>
-        <button class="filter-chip chip-due" id="chip-due" data-filter="due_soon">🟡 Due Soon</button>
-        <button class="filter-chip chip-missed" id="chip-missed" data-filter="overdue">🔴 Missed</button>
-        <button class="filter-chip chip-taken" id="chip-taken" data-filter="taken">🟢 Taken</button>
+        <button type="button" class="filter-chip active-chip" id="chip-all" data-filter="all">📋 All (Grouped)</button>
+        <button type="button" class="filter-chip chip-due" id="chip-due" data-filter="due_soon">🟡 Due Soon</button>
+        <button type="button" class="filter-chip chip-missed" id="chip-missed" data-filter="overdue">🔴 Missed</button>
+        <button type="button" class="filter-chip chip-taken" id="chip-taken" data-filter="taken">🟢 Taken</button>
       </div>
 
       <!-- Today's Schedule List (Separated & Categorized) -->
@@ -116,15 +116,15 @@
       </div>
 
       <!-- Prominent Primary Action Button (72px target) -->
-      <button class="btn-primary-lg btn-add-med" id="open-add-med-btn">
+      <button type="button" class="btn-primary-lg btn-add-med" id="open-add-med-btn">
         <span class="btn-icon">+</span> Add Medication
       </button>
 
       <!-- Bottom Nav for Patient View -->
       <nav class="bottom-nav">
-        <button class="nav-item active" data-target="schedule"><span class="nav-icon">📅</span> Schedule</button>
-        <button class="nav-item" data-target="reports" id="nav-reports-btn"><span class="nav-icon">📊</span> Reports</button>
-        <button class="nav-item" data-target="settings"><span class="nav-icon">⚙️</span> Settings</button>
+        <button type="button" class="nav-item active" data-target="schedule"><span class="nav-icon">📅</span> Schedule</button>
+        <button type="button" class="nav-item" data-target="reports" id="nav-reports-btn"><span class="nav-icon">📊</span> Reports</button>
+        <button type="button" class="nav-item" data-target="settings"><span class="nav-icon">⚙️</span> Settings</button>
       </nav>
     </section>
 
@@ -134,7 +134,7 @@
     <section id="view-caregiver" class="app-view hidden-view">
       <div class="caregiver-header">
         <h2>Grace's Caregiver Dashboard</h2>
-        <p class="sub-text">Remote Patient Monitoring & Alerts</p>
+        <p class="sub-text">Remote Patient Monitoring &amp; Alerts</p>
       </div>
 
       <!-- Bright Red Missed Dose Alert Banner (S5 Figma) -->
@@ -147,8 +147,8 @@
           </div>
         </div>
         <div class="alert-actions">
-          <a href="tel:+254712345678" class="btn-alert-action btn-call">📞 Call Grace</a>
-          <button class="btn-alert-action btn-send-nudge" id="nudge-grace-btn">🔔 Send Reminder</button>
+          <a href="tel:+254712345678" class="btn-alert-action btn-call">📞&nbsp;Call&nbsp;Grace</a>
+          <button type="button" class="btn-alert-action btn-send-nudge" id="nudge-grace-btn">🔔 Send Reminder</button>
         </div>
       </div>
 
@@ -163,7 +163,7 @@
       <!-- Remote Schedule Manager -->
       <div class="dashboard-block">
         <h3>Manage Schedule (Remote)</h3>
-        <button class="btn-secondary-lg btn-remote-add" id="caregiver-add-med-btn">
+        <button type="button" class="btn-secondary-lg btn-remote-add" id="caregiver-add-med-btn">
           + Add night medication
         </button>
       </div>
@@ -283,11 +283,11 @@
         <p class="med-alert-instr" id="alert-med-instr">Take with a glass of water</p>
         <p class="med-alert-time" id="alert-med-time">Scheduled for 1:00 PM</p>
 
-        <button class="btn-take-pill" id="btn-confirm-intake">
+        <button type="button" class="btn-take-pill" id="btn-confirm-intake">
           ✓ I Took It
         </button>
 
-        <button class="btn-snooze-pill" id="btn-snooze-intake">
+        <button type="button" class="btn-snooze-pill" id="btn-snooze-intake">
           Snooze 10 minutes
         </button>
 
@@ -304,7 +304,7 @@
   <div id="modal-add-med" class="modal-overlay hidden">
     <div class="add-med-card-modal">
       <div class="modal-header-nav">
-        <button class="back-link" id="close-add-modal">&larr; Back</button>
+        <button type="button" class="back-link" id="close-add-modal">&larr; Back</button>
         <h2>Add Medication</h2>
         <div></div>
       </div>

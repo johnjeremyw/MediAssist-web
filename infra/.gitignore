@@ -1,0 +1,7 @@
+# Local Terraform working files and state: never commit
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform-run.log
+# The provider lock file IS committed (.terraform.lock.hcl)

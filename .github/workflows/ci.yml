@@ -34,7 +34,7 @@ jobs:
           rsync -av \
             --exclude='.git' --exclude='.github' --exclude='dist' \
             --exclude='server.js' --exclude='db.json' \
-            --exclude='.htmlhintrc' --exclude='.htmlvalidate.json' \
+            --exclude='.htmlhintrc' --exclude='.htmlvalidate.json' --exclude='infra' \
             ./ dist/
           test -f dist/index.html
 
@@ -43,3 +43,25 @@ jobs:
         with:
           name: site
           path: dist
+
+  terraform-validate:
+    name: terraform-validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Format check
+        run: terraform fmt -check -diff
+
+      - name: Init (no backend)
+        run: terraform init -backend=false -input=false
+
+      - name: Validate
+        run: terraform validate
